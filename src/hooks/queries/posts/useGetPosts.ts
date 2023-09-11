@@ -10,25 +10,32 @@ export interface IPostData {
   body: string;
 }
 
-export const getPosts = async () => {
-  return await fetcher({ api: API.getPosts }).then(({ data }) => data);
+export const getPosts = async (id?: string) => {
+  return await fetcher({
+    api: id
+      ? {
+          ...API.getPosts,
+          url: `${API.getPosts.url}/${id}`,
+        }
+      : API.getPosts,
+  }).then(({ data }) => {
+    if (!Array.isArray(data)) {
+      return [data];
+    }
+    return data;
+  });
 };
 
 const useGetPosts = ({
   queryKey,
   options,
 }: {
-  queryKey?: number;
-  options: UseQueryOptions<
-    AxiosResponse<IPostData[]>,
-    AxiosError,
-    IPostData[],
-    Array<string | number>
-  >;
+  queryKey?: string;
+  options: UseQueryOptions<IPostData[], AxiosError, IPostData[], string[]>;
 }) => {
   return useQuery(
     queryKey ? ['posts', queryKey] : ['posts'],
-    getPosts,
+    () => getPosts(queryKey),
     options,
   );
 };

@@ -1,15 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useGetPosts from '@/hooks/queries/posts/useGetPosts';
 import Link from 'next/link';
 
-interface IProps {}
+interface IProps {
+  id?: string;
+}
 
-export default function Main({}: IProps) {
+export default function Main({ id }: IProps) {
   const [listKeys] = useState(['id', 'userId', 'title', 'body']);
 
   const { data, isSuccess, isLoading } = useGetPosts({
+    queryKey: id,
     options: {
       refetchOnMount: false,
       refetchOnWindowFocus: false,
