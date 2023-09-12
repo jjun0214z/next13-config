@@ -1,5 +1,5 @@
 import Main from '@/components/pages/Main';
-import { getPosts } from '@/hooks/queries/posts/useGetPosts';
+import { getPosts } from '@/hooks/queries/useGetPosts';
 import useGetQueryClient from '@/hooks/useGetQueryClient';
 import { dehydrate, Hydrate } from '@tanstack/react-query';
 
